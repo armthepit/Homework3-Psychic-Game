@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psychic Game</title>
+  <!-- Latest compiled and minified CSS --> 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!--- <link rel="stylesheet" type="text/css" href="assets/css/style.css"> -->
+</head>
+<body>
+	<div class="container"
+		<div class="row">
+			<div class="col-sm-12">
+				<h1>The Psychic Game</h1>
+				<p id="playerGuess">Guess what letter I'm thinking of?</p>
+				<p id="currentWins"></p>
+				<p id="currentLoses"></p>
+				<p id="remainingGuesses"></p>
+				<p id="guessesSoFar"></p>
+			</div>	
+		</div>
+	</div>	
+	<script type="text/javascript">
+
+		var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+		var wins = 0;
+		var loses = 0;
+		var guessCounter = 0;
+		var guesses = [];
+
+		setupGame();
+
+		function setupGame()
+		{
+			newHtml = "Wins:" + wins; 
+			document.getElementById('currentWins').innerHTML = newHtml;
+			newHtml = "Loses:" + loses; 
+			document.getElementById('currentLoses').innerHTML = newHtml;			
+			guessCounter = 10;
+			newHtml = "Guesses left:" + guessCounter; 
+			document.getElementById('remainingGuesses').innerHTML = newHtml;			
+			guesses = [];
+			newHtml = "Your guesses so far:" + guesses; 
+			document.getElementById('guessesSoFar').innerHTML = newHtml;				
+          	computerLetter = alphabet[Math.round(Math.random()*25)];
+          	checkGuess();
+        }  		
+
+        function checkGuess()
+        {
+			document.onkeyup = function(event) {
+				var letterGuess = String.fromCharCode(event.keyCode).toLowerCase();
+				if (letterGuess === computerLetter)
+				{
+					wins++;
+					setupGame();
+				}
+				if (alphabet.indexOf(letterGuess) === -1)
+				{
+					checkGuess();
+				}else 
+				{
+					if (guesses.indexOf(letterGuess) === -1)	
+					{
+						guessCounter--;
+						if (guessCounter === 0)
+						{
+							loses++;
+							setupGame();
+						} else {
+							guesses.push(letterGuess);
+						}			
+		 			}
+		 		}
+
+				newHtml = "Guesses left: " + guessCounter; 
+				document.getElementById('remainingGuesses').innerHTML = newHtml;
+				newHtml = "Your guesses so far: " + guesses; 
+				document.getElementById('guessesSoFar').innerHTML = newHtml;
+				checkGuess();  
+			}	       	
+		}
+  
+	</script>
+
+</body>
